@@ -64,7 +64,9 @@ namespace Final.Controllers
 
         public async Task<IActionResult> BanUser(BanUserDto banUserDto)
         {
-            await _userService.BanUser(banUserDto);
+            var userId = GetUserId();
+
+            await _userService.BanUser(banUserDto, userId);
             return Ok();
         }
 
@@ -73,8 +75,14 @@ namespace Final.Controllers
 
         public async Task<IActionResult> UnbanUser(BanUserDto banUserDto)
         {
-            await _userService.UnBanUser(banUserDto);
+            var userId = GetUserId();
+            await _userService.UnBanUser(banUserDto, userId);
             return Ok();
+        }
+
+        private string GetUserId()
+        {
+            return User.Claims.FirstOrDefault(x => x.Type == "UserId").Value.ToString();
         }
     }
 }

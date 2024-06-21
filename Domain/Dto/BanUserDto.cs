@@ -2,9 +2,7 @@
 {
     public class BanUserDto
     {
+        public string BannedUserId { get; set; }
 
-        public string BanIssuerUserEmail { get; set; }
-        public string BannedUserEmail { get; set; }
-        
     }
 }

@@ -12,8 +12,8 @@ namespace Final.Interfaces
 
         public Task AddUser(AddUserDto user);
         public Task ChangeUserRole(ChangeUserRoleDto user);
-        public Task BanUser(BanUserDto user);
-        public Task UnBanUser(BanUserDto user);
+        public Task BanUser(BanUserDto user, string userId);
+        public Task UnBanUser(BanUserDto user, string userId);
 
         public Task DeleteUser(string email);
 

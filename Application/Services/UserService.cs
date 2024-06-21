@@ -108,15 +108,15 @@ namespace Final.Services
 
         }
 
-        public async Task BanUser(BanUserDto banUserDto)
+        public async Task BanUser(BanUserDto banUserDto, string userId)
         {
-            var user = await _userManager.FindByEmailAsync(banUserDto.BanIssuerUserEmail.ToString());
+            var user = await _userManager.FindByIdAsync(userId);
             if (user.Role != EUserRole.Administrator)
             {
                 throw new Exception("You dont have permission to ban user");
             }
 
-            var userToBan = await _userManager.FindByEmailAsync(banUserDto.BannedUserEmail.ToString());
+            var userToBan = await _userManager.FindByIdAsync(banUserDto.BannedUserId);
             if (userToBan == null)
             {
                 throw new Exception("User not found");
@@ -128,15 +128,15 @@ namespace Final.Services
         }
 
 
-        public async Task UnBanUser(BanUserDto banUserDto)
+        public async Task UnBanUser(BanUserDto banUserDto, string userId)
         {
-            var user = await _userManager.FindByEmailAsync(banUserDto.BanIssuerUserEmail.ToString());
+            var user = await _userManager.FindByIdAsync(userId);
             if (user.Role != EUserRole.Administrator)
             {
                 throw new Exception("You dont have permission to Unban user");
             }
 
-            var userToBan = await _userManager.FindByEmailAsync(banUserDto.BannedUserEmail.ToString());
+            var userToBan = await _userManager.FindByIdAsync(banUserDto.BannedUserId);
             if (userToBan == null)
             {
                 throw new Exception("User not found");
@@ -163,7 +163,8 @@ namespace Final.Services
             {
                 await _roleManager.CreateAsync(new IdentityRole(newRole));
             }
-
+            identityUser.Role = changeUserRoleDto.Role;
+            await _userManager.UpdateAsync(identityUser);
             await _userManager.AddToRoleAsync(identityUser, newRole);
         }
     }
